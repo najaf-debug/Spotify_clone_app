@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, must_be_immutable
+// ignore_for_file: prefer_const_constructors_in_immutables, must_be_immutable, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:spotify_clone/Domain/spacer.dart';
 
-class MyDuctMusicPlayerWidget extends StatelessWidget {
+class MyDuctMusicPlayerWidget extends StatefulWidget {
   String songTitle;
   String albumTitle;
   bool isBluetooth;
@@ -24,13 +25,40 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
   });
 
   @override
+  State<MyDuctMusicPlayerWidget> createState() =>
+      _MyDuctMusicPlayerWidgetState();
+}
+
+class _MyDuctMusicPlayerWidgetState extends State<MyDuctMusicPlayerWidget> {
+  PaletteGenerator? paletteGenerator;
+
+  @override
+  void didUpdateWidget(covariant MyDuctMusicPlayerWidget oldWidget) {
+    super.didUpdateWidget(
+      oldWidget,
+    ); // rebuilding UI wihthout turning to hot restart i did this for the palette generator so i don't have to hot restart again for changing colors if i change image
+    if (oldWidget.thumbnailPath != widget.thumbnailPath) {
+      getDominantColor();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDominantColor();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5),
-      height: mHeight,
+      height: widget.mHeight,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(11),
-        color: bgColor,
+        color:
+            paletteGenerator != null && paletteGenerator!.dominantColor != null
+                ? paletteGenerator!.dominantColor!.color.withOpacity(0.2)
+                : widget.bgColor,
       ),
       child: Padding(
         padding: EdgeInsets.only(left: 8, right: 8, top: 10),
@@ -44,7 +72,9 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                   height: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
-                    image: DecorationImage(image: AssetImage(thumbnailPath)),
+                    image: DecorationImage(
+                      image: AssetImage(widget.thumbnailPath),
+                    ),
                   ),
                 ),
                 mSpacer(),
@@ -56,7 +86,7 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            songTitle,
+                            widget.songTitle,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -65,7 +95,7 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              " - $albumTitle",
+                              " - ${widget.albumTitle}",
                               maxLines: 1,
                               style: TextStyle(
                                 color: Colors.grey,
@@ -79,7 +109,7 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                         ],
                       ),
                       mSpacer(mHeight: 5),
-                      isBluetooth
+                      widget.isBluetooth
                           ? Row(
                             children: [
                               Icon(
@@ -89,7 +119,7 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                               ),
                               mSpacer(mWidth: 5),
                               Text(
-                                bluetoothName,
+                                widget.bluetoothName,
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontSize: 12,
@@ -103,7 +133,7 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
                 ),
                 mSpacer(),
                 Icon(
-                  isBluetooth ? Icons.bluetooth : Icons.devices,
+                  widget.isBluetooth ? Icons.bluetooth : Icons.devices,
                   color: Colors.green,
                 ),
                 mSpacer(),
@@ -113,7 +143,11 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
 
             LinearProgressIndicator(
               value: 0.5,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                paletteGenerator != null
+                    ? paletteGenerator!.dominantColor!.color
+                    : Colors.grey,
+              ),
               backgroundColor: Colors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(11),
             ),
@@ -121,5 +155,13 @@ class MyDuctMusicPlayerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  getDominantColor() async {
+    paletteGenerator = await PaletteGenerator.fromImageProvider(
+      AssetImage(widget.thumbnailPath),
+    );
+
+    setState(() {});
   }
 }
