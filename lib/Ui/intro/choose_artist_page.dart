@@ -67,7 +67,9 @@ class _ChooseArtistPageState extends State<ChooseArtistPage> {
 
               SizedBox(
                 height: 50,
-                child: TextField(decoration: getSearchTextFieldDecoration()),
+                child: TextField(
+                  decoration: getSearchTextFieldDecoration(mText: "Search"),
+                ),
               ),
 
               Expanded(

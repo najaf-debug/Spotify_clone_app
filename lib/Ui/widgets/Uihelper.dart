@@ -110,7 +110,7 @@ InputDecoration getCreateAccTextFieldDecoration() => InputDecoration(
 InputDecoration getSearchTextFieldDecoration({
   IconData mIcon = Icons.search,
   Color bgColor = Colors.white,
-  String mText = "Search",
+  String mText = "",
 }) => InputDecoration(
   contentPadding: EdgeInsets.zero,
   filled: true,

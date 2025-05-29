@@ -32,11 +32,9 @@ class MyDuctMusicPlayerWidget extends StatefulWidget {
 class _MyDuctMusicPlayerWidgetState extends State<MyDuctMusicPlayerWidget> {
   PaletteGenerator? paletteGenerator;
 
-  @override
+  @override // rebuilding UI wihthout turning to hot restart i did this for the palette generator so i don't have to hot restart again for changing colors if i change image
   void didUpdateWidget(covariant MyDuctMusicPlayerWidget oldWidget) {
-    super.didUpdateWidget(
-      oldWidget,
-    ); // rebuilding UI wihthout turning to hot restart i did this for the palette generator so i don't have to hot restart again for changing colors if i change image
+    super.didUpdateWidget(oldWidget);
     if (oldWidget.thumbnailPath != widget.thumbnailPath) {
       getDominantColor();
     }

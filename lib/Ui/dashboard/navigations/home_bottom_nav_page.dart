@@ -213,7 +213,7 @@ class HomeBottomNavPage extends StatelessWidget {
         ),
         mSpacer(mHeight: 4),
         SizedBox(
-          height: 200,
+          height: 180,
           child: ListView.builder(
             shrinkWrap: true,
             itemBuilder: (_, index) {

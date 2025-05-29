@@ -89,7 +89,10 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: Stack(
         children: [
-          mBottomNavPages[selectedBottomIndex],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 65.0),
+            child: mBottomNavPages[selectedBottomIndex],
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: MyDuctMusicPlayerWidget(
