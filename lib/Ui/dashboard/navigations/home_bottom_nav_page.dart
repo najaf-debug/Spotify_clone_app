@@ -51,7 +51,6 @@ class HomeBottomNavPage extends StatelessWidget {
             reviewUi(),
             mSpacer(),
             reviewListUi(),
-
             editorsPicksUi(),
           ],
         ),
@@ -75,7 +74,7 @@ class HomeBottomNavPage extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Uihelper.customIcons(icon: "Vector.png", mHeight: 20, mWidth: 20),
+              Uihelper.customIcons(icon: "Bell.png", mHeight: 20, mWidth: 20),
               mSpacer(mWidth: 15),
               Uihelper.customIcons(
                 icon: "orientation lock_light.png",
